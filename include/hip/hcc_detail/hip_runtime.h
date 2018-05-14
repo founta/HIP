@@ -626,7 +626,30 @@ __DEVICE__ void inline __assert_fail(const char * __assertion,
     // Ignore all the args for now.
     __device_trap();
 }
-#pragma push_macro("__DEVICE__")
+
+__DEVICE__ int printf (const char *__restrict __format, ...);
+
+__DEVICE__ void __syncthreads();
+
+#pragma pop_macro("__DEVICE__")
+
+#pragma push_macro("__OVERL__")
+#define __OVERL__ __attribute__((always_inline, overloadable)) __device__
+
+__OVERL__ unsigned int atomicAdd(unsigned int *address, unsigned int val);
+__OVERL__ int atomicAdd(int *address, int val);
+__OVERL__ float atomicAdd(float *address, float val);
+__OVERL__ unsigned long long int atomicAdd(unsigned long long int *address,
+                                           unsigned long long int val);
+
+__OVERL__ unsigned int atomicCAS(unsigned int *address, unsigned int compare,
+                                 unsigned int val);
+__OVERL__ int atomicCAS(int *address, int compare, int val);
+__OVERL__ unsigned long long int atomicCAS(unsigned long long int *address,
+                                           unsigned long long int compare,
+                                           unsigned long long int val);
+#pragma pop_macro("__OVERL__")
+
 
 #endif
 
